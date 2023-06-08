@@ -26,6 +26,8 @@ class User extends Authenticatable
         'nohp_verified_at',
     ];
 
+    // protected $guarded = [];
+
     /**
      * The attributes that should be hidden for serialization.
      *
