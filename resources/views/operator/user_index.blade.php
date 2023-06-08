@@ -16,6 +16,7 @@
                                 <th>Phone</th>
                                 <th>Email</th>
                                 <th>Access</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
 
@@ -27,6 +28,18 @@
                                 <td>{{ $item->nohp }}</td>
                                 <td>{{ $item->email }}</td>
                                 <td>{{ $item->access }}</td>
+                                <td>
+                                    
+                                    {!! Form::open([
+                                        'route' => ['user.destroy', $item->id],
+                                        'method' => 'DELETE',
+                                        'onsubmit' => 'return confirm("Are you sure want to delet this record?")'
+                                        ]) !!}
+                                    <a href="{{ route('user.edit', $item->id) }}" class="btn btn-info btn-sm">Edit</a>
+                                    {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}
+                                    
+                                    {!! Form::close() !!}
+                                </td>
                             </tr>
                             @empty
                                 <tr>

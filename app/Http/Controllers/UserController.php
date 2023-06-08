@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User as Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -78,7 +79,13 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = [
+            'model' => \App\Models\User::findOrFail($id),
+            'method' => 'PUT',
+            'route' => ['user.update', $id],
+            'button' => 'UPDATE'
+        ];
+        return view('operator.user_form', $data);
     }
 
     /**
@@ -90,7 +97,23 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $requestData = $request->validate([
+            'name' => 'required',
+            'email' => 'required|unique:users,email,' . $id,
+            'nohp' => 'required|unique:users,nohp,' . $id,
+            'access' => 'required|in:operator,admin',
+            'password' => 'nullable'
+        ]);
+        $model = Model::findOrFail($id);
+        if ($requestData['password'] == '') {
+            unset($requestData['password']);
+        } else {
+            $requestData['password'] = bcrypt($requestData['password']);
+        }
+        $model->fill($requestData);
+        $model->save();
+        flash('Data successfully update');
+        return redirect()->route('user.index');
     }
 
     /**
@@ -101,6 +124,15 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $model = Model::findOrFail($id);
+        $loggedInUser = Auth::user();
+        if ($model->id == $loggedInUser->id) {
+            flash('Can not delete the data where are logged in! Please contact support if you need assistance.')->error();
+            return back();
+        }
+        $model->delete();
+
+        flash('Successfully deleted the record');
+        return redirect()->route('user.index');
     }
 }
