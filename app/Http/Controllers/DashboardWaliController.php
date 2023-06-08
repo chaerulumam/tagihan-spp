@@ -8,8 +8,6 @@ class DashboardWaliController extends Controller
 {
     public function index()
     {
-        return view('wali.dashboard_index', [
-            'title' => 'Wali'
-        ]);
+        return view('wali.dashboard_index');
     }
 }
