@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardOperatorController;
 use App\Http\Controllers\DashboardWaliController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +23,7 @@ Route::get('/', function () {
 
 Route::prefix('operator')->middleware(['auth', 'auth.operator'])->group(function () {
     Route::get('operator', [DashboardOperatorController::class, 'index'])->name('operator.dashboard');
+    Route::resource('user', UserController::class);
 });
 
 Route::prefix('wali')->middleware(['auth', 'auth.wali'])->group( function() {
