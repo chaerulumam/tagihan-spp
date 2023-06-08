@@ -8,42 +8,33 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    private $viewIndex = 'user_index';
+    private $viewCreate = 'user_form';
+    private $viewEdit = 'user_form';
+    private $viewShow = 'user_show';
+    private $routeFolder = 'operator';
+    private $routePrefix = 'user';
+    
     public function index()
     {
-        return view('operator.user_index', [
+        return view($this->routeFolder . '.' . $this->viewIndex, [
             'models' => Model::where('access', '<>', 'wali')
                 ->latest()
                 ->paginate(20)
         ]);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+  
     public function create()
     {
         $data = [
-            'model' => new \App\Models\User(),
+            'model' => new Model(),
             'method' => 'POST',
-            'route' => 'user.store',
+            'route' => $this->routePrefix . '.store',
             'button' => 'SUBMIT'
         ];
-        return view('operator.user_form', $data);
+        return view($this->routeFolder . '.' . $this->viewCreate, $data);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request)
     {
         $requestData = $request->validate([
@@ -57,44 +48,20 @@ class UserController extends Controller
         $requestData['email_verified_at'] = now();
         Model::create($requestData);
         flash('Data successfully recorded');
-        return back();
+        return redirect()->route($this->routePrefix . '.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $data = [
-            'model' => \App\Models\User::findOrFail($id),
+            'model' => Model::findOrFail($id),
             'method' => 'PUT',
-            'route' => ['user.update', $id],
+            'route' => [$this->routePrefix . '.update', $id],
             'button' => 'UPDATE'
         ];
-        return view('operator.user_form', $data);
+        return view($this->routeFolder . '.' . $this->viewEdit, $data);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $requestData = $request->validate([
@@ -113,15 +80,9 @@ class UserController extends Controller
         $model->fill($requestData);
         $model->save();
         flash('Data successfully update');
-        return redirect()->route('user.index');
+        return redirect()->route($this->routePrefix . '.index');
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function destroy($id)
     {
         $model = Model::findOrFail($id);
@@ -133,6 +94,6 @@ class UserController extends Controller
         $model->delete();
 
         flash('Successfully deleted the record');
-        return redirect()->route('user.index');
+        return redirect()->route($this->routePrefix . '.index');
     }
 }
