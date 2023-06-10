@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardOperatorController;
 use App\Http\Controllers\DashboardWaliController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WaliController;
 use Illuminate\Support\Facades\Auth;
@@ -28,6 +29,7 @@ Route::prefix('operator')->middleware(['auth', 'auth.operator'])->group(function
     Route::get('dashboard', [DashboardOperatorController::class, 'index'])->name('operator.dashboard');
     Route::resource('user', UserController::class);
     Route::resource('wali', WaliController::class);
+    Route::resource('student', StudentController::class);
 });
 
 Route::prefix('walimurid')->middleware(['auth', 'auth.wali'])->group( function() {

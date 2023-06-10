@@ -4,18 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
-use App\Models\Student;
+use App\Models\Student as Model;
+use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    private $viewIndex = 'student_index';
+    private $viewCreate = 'student_form';
+    private $viewEdit = 'student_form';
+    private $viewShow = 'student_show';
+    private $routePrefix = 'student';
+    
+    public function index(Request $request)
     {
-        //
+        if ($request->filled('q')) {
+            $models = Model::search($request->q)->paginate(50);
+        } else {
+            $models = Model::latest()->paginate(50);
+        }
+
+        return view('operator.' . $this->viewIndex, [
+            'models' => $models,
+            'routePrefix' => $this->routePrefix,
+            'title' => 'Student List',
+            
+        ]);
     }
 
     /**
@@ -45,7 +58,7 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function show(Student $student)
+    public function show(Model $student)
     {
         //
     }
@@ -56,7 +69,7 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function edit(Student $student)
+    public function edit(Model $student)
     {
         //
     }
@@ -68,7 +81,7 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateStudentRequest $request, Student $student)
+    public function update(UpdateStudentRequest $request, Model $student)
     {
         //
     }
@@ -79,7 +92,7 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Student $student)
+    public function destroy(Model $student)
     {
         //
     }
