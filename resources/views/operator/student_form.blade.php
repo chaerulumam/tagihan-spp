@@ -9,7 +9,7 @@
                 {!! Form::model($model, ['route' => $route, 'method' => $method, 'files' => true]) !!}
                     <div class="form-group mb-3">
                         <label for="wali_id">Wali Name</label>
-                        {!! Form::select('wali_id', $wali, null, ['class' => 'form-control mt-1 select2']) !!}
+                        {!! Form::select('wali_id', $wali, null, ['class' => 'form-control mt-1 select2', 'placeholder' => 'Choose Wali']) !!}
                         <span class="text-danger">{{ $errors->first('wali_id') }}</span>
                     </div>
                     <div class="form-group mb-3">
