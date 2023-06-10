@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use App\Models\Student as Model;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -38,7 +39,16 @@ class StudentController extends Controller
      */
     public function create()
     {
-        //
+        $data = [
+            'model' => new Model(),
+            'method' => 'POST',
+            'route' => $this->routePrefix . '.store',
+            'button' => 'SUBMIT',
+            'title' => 'Create Student Record',
+            'wali' => User::where('access', 'wali')->pluck('name', 'id')
+        ];
+
+        return view('operator.' . $this->viewCreate, $data);
     }
 
     /**
