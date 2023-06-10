@@ -4,7 +4,7 @@
 <div class="row justify-content-center">
     <div class="col-md-12">
         <div class="card">
-            <h5 class="card-header">Create new record</h5>
+            <h5 class="card-header">{{ $title }}</h5>
             <div class="card-body">
                 {!! Form::model($model, ['route' => $route, 'method' => $method]) !!}
                     <div class="form-group mb-3">
@@ -27,20 +27,22 @@
                         {!! Form::number('nohp', null, ['class' => 'form-control mt-1', 'autofocus']) !!}
                         <span class="text-danger">{{ $errors->first('nohp') }}</span>
                     </div>
-                    <div class="form-group mb-3">
-                        <label for="access">Access Type</label>
-                        {!! Form::select('access',
-                            [
-                                'operator' => 'Operator School',
-                                'admin' => 'Administrator'
-                            ],
-                            null,
-                            [
-                                'class' => 'form-control mt-1'
-                            ]
-                        ) !!}
-                        <span class="text-danger">{{ $errors->first('access') }}</span>
-                    </div>
+                    @if (\Route::is('user.create'))
+                        <div class="form-group mb-3">
+                            <label for="access">Access Type</label>
+                            {!! Form::select('access',
+                                [
+                                    'operator' => 'Operator School',
+                                    'admin' => 'Administrator'
+                                ],
+                                null,
+                                [
+                                    'class' => 'form-control mt-1'
+                                ]
+                            ) !!}
+                            <span class="text-danger">{{ $errors->first('access') }}</span>
+                        </div>
+                    @endif
                     {!! Form::submit($button, ['class' => 'btn btn-primary btn-sm']) !!}
                 {!! Form::close() !!}
             </div>

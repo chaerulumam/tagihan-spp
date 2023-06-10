@@ -6,22 +6,22 @@ use App\Models\User as Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class UserController extends Controller
+class WaliController extends Controller
 {
     private $viewIndex = 'user_index';
     private $viewCreate = 'user_form';
     private $viewEdit = 'user_form';
     private $viewShow = 'user_show';
-    private $routePrefix = 'user';
+    private $routePrefix = 'wali';
     
     public function index()
     {
         return view('operator.' . $this->viewIndex, [
-            'models' => Model::where('access', '<>', 'wali')
+            'models' => Model::where('access', 'wali')
                 ->latest()
                 ->paginate(20),
             'routePrefix' => $this->routePrefix,
-            'title' => 'List User Data'
+            'title' => 'List Wali Data'
         ]);
     }
   
@@ -32,7 +32,7 @@ class UserController extends Controller
             'method' => 'POST',
             'route' => $this->routePrefix . '.store',
             'button' => 'SUBMIT',
-            'title' => 'Create new User record'
+            'title' => 'Create new Wali record'
         ];
         return view('operator.' . $this->viewCreate, $data);
     }
@@ -43,11 +43,11 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|unique:users',
             'nohp' => 'required|unique:users',
-            'access' => 'required|in:operator,admin',
             'password' => 'required',
         ]);
         $requestData['password'] = bcrypt($requestData['password']);
         $requestData['email_verified_at'] = now();
+        $requestData['access'] = 'wali';
         Model::create($requestData);
         flash('Data successfully recorded');
         return redirect()->route($this->routePrefix . '.index');
@@ -60,7 +60,7 @@ class UserController extends Controller
             'method' => 'PUT',
             'route' => [$this->routePrefix . '.update', $id],
             'button' => 'UPDATE',
-            'title' => 'Update User record'
+            'title' => 'Update Wali record'
         ];
         return view('operator.' . $this->viewEdit, $data);
     }
@@ -87,12 +87,8 @@ class UserController extends Controller
    
     public function destroy($id)
     {
-        $model = Model::findOrFail($id);
+        $model = Model::where('access', 'wali')->firstOrFail();
         $loggedInUser = Auth::user();
-        if ($model->id == $loggedInUser->id) {
-            flash('Can not delete the data where are logged in! Please contact support if you need assistance.')->error();
-            return back();
-        }
         $model->delete();
 
         flash('Successfully deleted the record');

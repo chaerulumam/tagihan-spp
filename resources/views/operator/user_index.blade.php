@@ -4,9 +4,9 @@
 <div class="row justify-content-center">
     <div class="col-md-12">
         <div class="card">
-            <h5 class="card-header">Data User</h5>
+            <h5 class="card-header">{{ $title }}</h5>
             <div class="card-body">
-                <a href="{{ route('user.create') }}" class="btn btn-primary btn-sm">Add Record</a>
+                <a href="{{ route($routePrefix . '.create') }}" class="btn btn-primary btn-sm">Add Record</a>
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
@@ -31,11 +31,11 @@
                                 <td>
                                     
                                     {!! Form::open([
-                                        'route' => ['user.destroy', $item->id],
+                                        'route' => [$routePrefix . '.destroy', $item->id],
                                         'method' => 'DELETE',
                                         'onsubmit' => 'return confirm("Are you sure want to delet this record?")'
                                         ]) !!}
-                                    <a href="{{ route('user.edit', $item->id) }}" class="btn btn-info btn-sm">Edit</a>
+                                    <a href="{{ route($routePrefix . '.edit', $item->id) }}" class="btn btn-info btn-sm">Edit</a>
                                     {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}
                                     
                                     {!! Form::close() !!}

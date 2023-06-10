@@ -57,6 +57,9 @@
 
     <!-- Page CSS -->
 
+    {{-- FontAwesome --}}
+    <link rel="stylesheet" href="{{ asset('font/css/all.min.css') }}">
+
     <!-- Helpers -->
     <script src="{{ asset('sneat') }}/assets/vendor/js/helpers.js"></script>
 
@@ -141,16 +144,22 @@
 
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
-            <li class="menu-item active">
+            <li class="menu-item {{ \Route::is('operator.dashboard') ? 'active' : '' }}">
               <a href="{{ route('operator.dashboard') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
               </a>
             </li>
-            <li class="menu-item">
+            <li class="menu-item {{ \Route::is('user.*') ? 'active' : '' }}">
               <a href="{{ route('user.index') }}" class="menu-link">
                 <i class="bx bx-user me-2"></i>
                 <div data-i18n="Analytics">User</div>
+              </a>
+            </li>
+            <li class="menu-item {{ \Route::is('wali.*') ? 'active' : '' }}">
+              <a href="{{ route('wali.index') }}" class="menu-link">
+                <i class="bx bx-user me-2"></i>
+                <div data-i18n="Analytics">Wali</div>
               </a>
             </li>
             <li class="menu-item">
