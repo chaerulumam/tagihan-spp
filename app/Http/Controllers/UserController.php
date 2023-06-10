@@ -20,7 +20,8 @@ class UserController extends Controller
         return view($this->routeFolder . '.' . $this->viewIndex, [
             'models' => Model::where('access', '<>', 'wali')
                 ->latest()
-                ->paginate(20)
+                ->paginate(20),
+            'title' => 'List User Data'
         ]);
     }
   
