@@ -88,7 +88,6 @@ class WaliController extends Controller
     public function destroy($id)
     {
         $model = Model::where('access', 'wali')->firstOrFail();
-        $loggedInUser = Auth::user();
         $model->delete();
 
         flash('Successfully deleted the record');

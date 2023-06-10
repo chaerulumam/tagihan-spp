@@ -58,9 +58,12 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function show(Model $student)
+    public function show($id)
     {
-        //
+        return view('operator.' . $this->viewShow, [
+            'title' => 'Details Student Info',
+            'model' => Model::findOrFail($id)
+        ]);
     }
 
     /**

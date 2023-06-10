@@ -47,8 +47,9 @@
                                         'method' => 'DELETE',
                                         'onsubmit' => 'return confirm("Are you sure want to delet this record?")'
                                         ]) !!}
-                                    <a href="{{ route($routePrefix . '.edit', $item->id) }}" class="btn btn-info btn-sm">Edit</a>
-                                    {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}
+                                    <a href="{{ route($routePrefix . '.edit', $item->id) }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> Edit</a>
+                                    <a href="{{ route($routePrefix . '.show', $item->id) }}" class="btn btn-success btn-sm"><i class="fa-solid fa-circle-info"></i> Details</a>
+                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i>  Delete</button>
                                     
                                     {!! Form::close() !!}
                                 </td>

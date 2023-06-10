@@ -29,16 +29,15 @@
                                 <td>{{ $item->email }}</td>
                                 <td>{{ $item->access }}</td>
                                 <td>
+                                {!! Form::open([
+                                    'route' => [$routePrefix . '.destroy', $item->id],
+                                    'method' => 'DELETE',
+                                    'onsubmit' => 'return confirm("Are you sure want to delet this record?")'
+                                ]) !!}
                                     
-                                    {!! Form::open([
-                                        'route' => [$routePrefix . '.destroy', $item->id],
-                                        'method' => 'DELETE',
-                                        'onsubmit' => 'return confirm("Are you sure want to delet this record?")'
-                                        ]) !!}
-                                    <a href="{{ route($routePrefix . '.edit', $item->id) }}" class="btn btn-info btn-sm">Edit</a>
-                                    {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}
-                                    
-                                    {!! Form::close() !!}
+                                    <a href="{{ route($routePrefix . '.edit', $item->id) }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> Edit</a>
+                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i>  Delete</button>
+                                {!! Form::close() !!}
                                 </td>
                             </tr>
                             @empty

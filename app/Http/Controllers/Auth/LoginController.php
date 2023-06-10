@@ -47,7 +47,7 @@ class LoginController extends Controller
         } elseif ($user->access == 'wali') {
             return redirect()->route('wali.dashboard');
         } else {
-            Auth::user()->logout();
+            Auth::logout();
             flash('You are not athorization')->error();
             return redirect()->route('login');
         }
