@@ -26,6 +26,7 @@
                                 <th>Jurusan</th>
                                 <th>Kelas</th>
                                 <th>Angakatan</th>
+                                <th>Created By</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -40,6 +41,7 @@
                                 <td>{{ $item->jurusan }}</td>
                                 <td>{{ $item->kelas }}</td>
                                 <td>{{ $item->angkatan }}</td>
+                                <td>{{ $item->user->name }}</td>
                                 <td>
                                     
                                     {!! Form::open([

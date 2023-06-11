@@ -20,7 +20,7 @@ class StudentController extends Controller
         if ($request->filled('q')) {
             $models = Model::search($request->q)->paginate(50);
         } else {
-            $models = Model::latest()->paginate(5);
+            $models = Model::with('wali', 'user')->latest()->paginate(5);
         }
 
         return view('operator.' . $this->viewIndex, [
