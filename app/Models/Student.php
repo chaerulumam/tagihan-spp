@@ -26,7 +26,7 @@ class Student extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class,)->withDefault(1);
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -36,6 +36,8 @@ class Student extends Model
      */
     public function wali()
     {
-        return $this->belongsTo(User::class, 'wali_id');
+        return $this->belongsTo(User::class, 'wali_id')->withDefault([
+            'name' => 'Wali not found'
+        ]);
     }
 }

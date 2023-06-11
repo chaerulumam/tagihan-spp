@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreStudentRequest;
-use App\Http\Requests\UpdateStudentRequest;
-use App\Models\Student as Model;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\Student as Model;
+use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
@@ -76,7 +75,7 @@ class StudentController extends Controller
         if ($request->filled('wali_id')) {
             $requestData['wali_status'] = 'ok';
         }
-        
+
         $requestData['user_id'] = auth()->user()->id;
         Model::create($requestData);
         flash('Successfully create new record');
@@ -103,9 +102,18 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function edit(Model $student)
+    public function edit($id)
     {
-        //
+        $data = [
+            'model' => Model::findOrFail($id),
+            'method' => 'PUT',
+            'route' => [$this->routePrefix . '.update', $id],
+            'button' => 'UPDATE',
+            'title' => 'Update Student record',
+            'wali' => User::where('access', 'wali')->pluck('name', 'id')
+        ];
+
+        return view('operator.' . $this->viewEdit, $data);
     }
 
     /**
@@ -115,9 +123,34 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateStudentRequest $request, Model $student)
+    public function update(Request $request, $id)
     {
-        //
+        $requestData = $request->validate([
+            'wali_id' => 'nullable',
+            'name' => 'required',
+            'nisn' => 'required|unique:students,nisn,' . $id,
+            'jurusan' => 'required',
+            'kelas' => 'required',
+            'angkatan' => 'required',
+            'foto' => 'nullable|image|mimes:jpeg,jpg,png|max:2000'
+        ]);
+
+        $model = Model::findOrFail($id);
+
+        if ($request->hasFile('foto')) {
+            Storage::delete($model->foto);
+            $requestData['foto'] = $request->file('foto')->store('public');
+        }
+
+        if ($request->filled('wali_id')) {
+            $requestData['wali_status'] = 'ok';
+        }
+
+        $requestData['user_id'] = auth()->user()->id;
+        $model->fill($requestData);
+        $model->save();
+        flash('Data successfully updated');
+        return redirect()->route($this->routePrefix . '.index');
     }
 
     /**
@@ -126,8 +159,12 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Model $student)
+    public function destroy($id)
     {
-        //
+        $model = Model::findOrFail($id);
+        $model->delete();
+
+        flash('Successfully deleted the record');
+        return redirect()->route($this->routePrefix . '.index');
     }
 }
