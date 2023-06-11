@@ -46,4 +46,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function scopeWali($q)
+    {
+        return $q->where('access', 'wali');
+    }
+
+    public function student()
+    {
+        return $this->hasMany(Student::class, 'wali_id', 'id');
+    }
 }

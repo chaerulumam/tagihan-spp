@@ -9,7 +9,6 @@
             </h5>
             <div class="card-body">
                 <img src="{{ \Storage::url($model->foto ?? 'images/no-image.png') }}" width="150" />
-                    {{-- <img src="{{ asset('images/no-image.png') }}" width="150" /> --}}
                     <table class="table table-striped table-sm">
                         <thead>
                             <tr>

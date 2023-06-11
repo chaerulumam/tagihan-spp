@@ -47,10 +47,9 @@
                                         'method' => 'DELETE',
                                         'onsubmit' => 'return confirm("Are you sure want to delet this record?")'
                                         ]) !!}
-                                    <a href="{{ route($routePrefix . '.edit', $item->id) }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> Edit</a>
-                                    <a href="{{ route($routePrefix . '.show', $item->id) }}" class="btn btn-success btn-sm"><i class="fa-solid fa-circle-info"></i> Details</a>
-                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i>  Delete</button>
-                                    
+                                                <a href="{{ route($routePrefix . '.edit', $item->id) }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> Edit</a>
+                                                <a href="{{ route($routePrefix . '.show', $item->id) }}" class="btn btn-success btn-sm"><i class="fa-solid fa-circle-info"></i> Details</a>
+                                                <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i>  Delete</button>
                                     {!! Form::close() !!}
                                 </td>
                             </tr>
@@ -61,7 +60,9 @@
                             @endforelse
                         </tbody>
                     </table>
-                    {{ $models->links() }}
+                    <div class="mt-2">
+                        {{ $models->links() }}
+                    </div>
                 </div>
             </div>
         </div>

@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardWaliController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WaliController;
+use App\Http\Controllers\WaliStudentController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +31,7 @@ Route::prefix('operator')->middleware(['auth', 'auth.operator'])->group(function
     Route::resource('user', UserController::class);
     Route::resource('wali', WaliController::class);
     Route::resource('student', StudentController::class);
+    Route::resource('walistudent', WaliStudentController::class);
 });
 
 Route::prefix('walimurid')->middleware(['auth', 'auth.wali'])->group( function() {

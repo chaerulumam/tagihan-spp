@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,12 @@ class StudentFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => fake()->name(),
+            'nisn' => fake()->randomNumber(7, true),
+            'jurusan' => fake()->word('RPL'),
+            'kelas' => fake()->randomLetter('X'),
+            'angkatan' => fake()->year(),
+            'user_id' => fake()->randomDigitNotNull(1),
         ];
     }
 }

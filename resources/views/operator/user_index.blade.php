@@ -36,6 +36,7 @@
                                 ]) !!}
                                     
                                     <a href="{{ route($routePrefix . '.edit', $item->id) }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> Edit</a>
+                                    <a href="{{ route($routePrefix . '.show', $item->id) }}" class="btn btn-success btn-sm ml-2 mr-2"><i class="fa-solid fa-circle-info"></i> Details</a>
                                     <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i>  Delete</button>
                                 {!! Form::close() !!}
                                 </td>

@@ -11,13 +11,13 @@ class WaliController extends Controller
     private $viewIndex = 'user_index';
     private $viewCreate = 'user_form';
     private $viewEdit = 'user_form';
-    private $viewShow = 'user_show';
+    private $viewShow = 'wali_show';
     private $routePrefix = 'wali';
     
     public function index()
     {
         return view('operator.' . $this->viewIndex, [
-            'models' => Model::where('access', 'wali')
+            'models' => Model::wali()
                 ->latest()
                 ->paginate(20),
             'routePrefix' => $this->routePrefix,
@@ -51,6 +51,15 @@ class WaliController extends Controller
         Model::create($requestData);
         flash('Data successfully recorded');
         return redirect()->route($this->routePrefix . '.index');
+    }
+
+    public function show($id)
+    {
+        return view('operator.' . $this->viewShow, [
+            'model' => Model::wali()->where('id', $id)->firstOrFail(),
+            'student' => \App\Models\Student::whereNotIn('wali_id', [$id])->pluck('name', 'id'),
+            'title' => 'Detail Wali Student record'
+        ]);
     }
 
     public function edit($id)
