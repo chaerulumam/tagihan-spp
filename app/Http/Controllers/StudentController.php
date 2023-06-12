@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Student as Model;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\StoreStudentRequest;
+use App\Http\Requests\UpdateStudentRequest;
 
 class StudentController extends Controller
 {
@@ -56,17 +58,9 @@ class StudentController extends Controller
      * @param  \App\Http\Requests\StoreStudentRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreStudentRequest $request)
     {
-        $requestData = $request->validate([
-            'wali_id' => 'nullable',
-            'name' => 'required',
-            'nisn' => 'required|unique:students',
-            'jurusan' => 'required',
-            'kelas' => 'required',
-            'angkatan' => 'required',
-            'foto' => 'nullable|image|mimes:jpeg,jpg,png|max:2000'
-        ]);
+        $requestData = $request->validated();
 
         if ($request->hasFile('foto')) {
             $requestData['foto'] = $request->file('foto')->store('public');
@@ -123,17 +117,10 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateStudentRequest $request, $id)
     {
-        $requestData = $request->validate([
-            'wali_id' => 'nullable',
-            'name' => 'required',
-            'nisn' => 'required|unique:students,nisn,' . $id,
-            'jurusan' => 'required',
-            'kelas' => 'required',
-            'angkatan' => 'required',
-            'foto' => 'nullable|image|mimes:jpeg,jpg,png|max:2000'
-        ]);
+        $requestData = $request->validated();
+        // dd($requestData);
 
         $model = Model::findOrFail($id);
 

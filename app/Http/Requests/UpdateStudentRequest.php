@@ -13,7 +13,7 @@ class UpdateStudentRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,13 @@ class UpdateStudentRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'wali_id' => 'nullable',
+            'name' => 'required',
+            'nisn' => 'required|unique:students,nisn,' . $this->student,
+            'jurusan' => 'required',
+            'kelas' => 'required',
+            'angkatan' => 'required',
+            'foto' => 'nullable|image|mimes:jpeg,jpg,png|max:2000'
         ];
     }
 }
