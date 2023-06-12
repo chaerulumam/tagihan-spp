@@ -107,7 +107,6 @@ class CostController extends Controller
 
         $requestData['user_id'] = auth()->user()->id;
         $model->fill($requestData);
-        // dd($requestData);
         $model->save();
         flash('Data successfully updated');
         return redirect()->route($this->routePrefix . '.index');

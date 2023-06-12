@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 
 class StoreCostRequest extends FormRequest
 {
@@ -25,7 +26,14 @@ class StoreCostRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:costs,name',
-            'quantity' => 'required'
+            'quantity' => 'required|numeric'
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'quantity' => str_replace('.', '', $this->quantity)
+        ]);
     }
 }

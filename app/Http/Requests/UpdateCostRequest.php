@@ -24,8 +24,15 @@ class UpdateCostRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:costs,name,' . $this->id,
-            'quantity' => 'required'
+            'name' => 'required|unique:costs,name,' . $this->cost,
+            'quantity' => 'required|numeric'
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'quantity' => str_replace('.', '', $this->quantity)
+        ]);
     }
 }

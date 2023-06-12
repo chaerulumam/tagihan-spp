@@ -14,7 +14,7 @@
                     </div>
                     <div class="form-group mb-3">
                         <label for="quantity">QUANTITY / PRICE</label>
-                        {!! Form::number('quantity', null, ['class' => 'form-control mt-1', 'autofocus']) !!}
+                        {!! Form::text('quantity', null, ['class' => 'form-control rupiah mt-1', 'autofocus']) !!}
                         <span class="text-danger">{{ $errors->first('quantity') }}</span>
                     </div>
                     {!! Form::submit($button, ['class' => 'btn btn-primary btn-sm']) !!}

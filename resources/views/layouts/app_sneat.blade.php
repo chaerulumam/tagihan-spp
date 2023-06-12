@@ -345,8 +345,11 @@
     {{-- Select2 --}}
     <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
     <script src="{{ asset('js/select2.min.js') }}"></script>
+    <script src="{{ asset('js/jquery.mask.min.js') }}"></script>
     <script>
       $(document).ready(function () {
+        $('.rupiah').mask("#.##0", {reverse: true});
+
         $('.select2').select2();
       })
     </script>
