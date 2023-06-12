@@ -168,6 +168,12 @@
                 <div data-i18n="Analytics">Student</div>
               </a>
             </li>
+            <li class="menu-item {{ \Route::is('cost.*') ? 'active' : '' }}">
+              <a href="{{ route('cost.index') }}" class="menu-link">
+                <i class="bx bx-money me-2"></i>
+                <div data-i18n="Analytics">Cost Module</div>
+              </a>
+            </li>
             <li class="menu-item">
               <a class="menu-link" href="{{ route('logout') }}">
                 <i class="bx bx-power-off me-2"></i>
