@@ -6,11 +6,19 @@ use App\Traits\HasFormatRupiah;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Nicolaslopezj\Searchable\SearchableTrait;
 
 class Cost extends Model
 {
-    use HasFactory, HasFormatRupiah;
+    use HasFactory, HasFormatRupiah, SearchableTrait;
     protected $guarded = [];
+
+    protected $searchable = [
+        'columns' => [
+            'name' => 10,
+            'quantity' => 10
+        ]
+    ];
 
     /**
      * Get the user that owns the Cost
