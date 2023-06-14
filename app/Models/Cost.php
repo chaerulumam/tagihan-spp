@@ -20,4 +20,16 @@ class Cost extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    // event handler
+    protected static function booted()
+    {
+        static::creating(function ($cost) {
+            $cost->user_id = auth()->user()->id;
+        });
+
+        static::updating(function ($cost) {
+            $cost->user_id = auth()->user()->id;
+        });
+    }
 }

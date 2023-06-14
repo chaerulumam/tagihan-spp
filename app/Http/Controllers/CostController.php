@@ -56,12 +56,9 @@ class CostController extends Controller
      */
     public function store(StoreCostRequest $request)
     {
-        $requestData = $request->validated();
-        $requestData['user_id'] = auth()->user()->id;
-        // dd($requestData);
-        Model::create($requestData);
+        Model::create($request->validated());
         flash('Successfully create new record');
-        return back();
+        return redirect()->route($this->routePrefix . '.index');
     }
 
     /**
@@ -102,11 +99,9 @@ class CostController extends Controller
      */
     public function update(UpdateCostRequest $request, $id)
     {
-        $requestData = $request->validated();
         $model = Model::findOrFail($id);
 
-        $requestData['user_id'] = auth()->user()->id;
-        $model->fill($requestData);
+        $model->fill($request->validated());
         $model->save();
         flash('Data successfully updated');
         return redirect()->route($this->routePrefix . '.index');
