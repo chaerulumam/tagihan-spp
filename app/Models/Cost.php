@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\HasFormatRupiah;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Cost extends Model
 {
-    use HasFactory;
+    use HasFactory, HasFormatRupiah;
     protected $guarded = [];
 
     /**

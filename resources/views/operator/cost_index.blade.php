@@ -36,7 +36,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->name }}</td>
-                                <td>{{ formatRupiah($item->quantity, 'IDR. ') }}</td>
+                                <td>{{ $item->formatRupiah('quantity') }}</td>
                                 <td>{{ $item->user->name }}</td>
                                 <td>
                                     
