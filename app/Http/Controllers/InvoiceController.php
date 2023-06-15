@@ -2,20 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+use App\Models\Invoice as Model;
 use App\Http\Requests\StoreInvoiceRequest;
 use App\Http\Requests\UpdateInvoiceRequest;
-use App\Models\Invoice;
+use App\Models\Cost;
+use App\Models\Student;
 
 class InvoiceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    private $viewIndex = 'invoice_index';
+    private $viewCreate = 'invoice_form';
+    private $viewEdit = 'invoice_form';
+    private $viewShow = 'invoice_show';
+    private $routePrefix = 'invoice';
+    
+    public function index(Request $request)
     {
-        //
+
+        if ($request->filled('q')) {
+            $models = Model::with('user', 'student')->search($request->q)->paginate(50);
+        } else {
+            $models = Model::with('user', 'student')->latest()->paginate(5);
+        }
+
+        return view('operator.' . $this->viewIndex, [
+            'models' => $models,
+            'routePrefix' => $this->routePrefix,
+            'title' => 'Invoice List'
+        ]);
     }
 
     /**
@@ -25,7 +40,19 @@ class InvoiceController extends Controller
      */
     public function create()
     {
-        //
+        $studentQuery = Student::all();
+        $data = [
+            'model' => new Model(),
+            'method' => 'GET',
+            'route' => $this->routePrefix . '.store',
+            'button' => 'SUBMIT',
+            'title' => 'Create Invoice Record',
+            'angkatan' => $studentQuery->pluck('angkatan', 'angkatan'),
+            'kelas' => $studentQuery->pluck('kelas', 'kelas'),
+            'amount' => Cost::get()
+        ];
+
+        return view('operator.' . $this->viewCreate, $data);
     }
 
     /**
@@ -45,7 +72,7 @@ class InvoiceController extends Controller
      * @param  \App\Models\Invoice  $invoice
      * @return \Illuminate\Http\Response
      */
-    public function show(Invoice $invoice)
+    public function show(Model $invoice)
     {
         //
     }
@@ -56,7 +83,7 @@ class InvoiceController extends Controller
      * @param  \App\Models\Invoice  $invoice
      * @return \Illuminate\Http\Response
      */
-    public function edit(Invoice $invoice)
+    public function edit(Model $invoice)
     {
         //
     }
@@ -68,7 +95,7 @@ class InvoiceController extends Controller
      * @param  \App\Models\Invoice  $invoice
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateInvoiceRequest $request, Invoice $invoice)
+    public function update(UpdateInvoiceRequest $request, Model $invoice)
     {
         //
     }
@@ -79,7 +106,7 @@ class InvoiceController extends Controller
      * @param  \App\Models\Invoice  $invoice
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Invoice $invoice)
+    public function destroy(Model $invoice)
     {
         //
     }

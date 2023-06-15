@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasFormatRupiah;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +13,7 @@ class Cost extends Model
 {
     use HasFactory, HasFormatRupiah, SearchableTrait;
     protected $guarded = [];
+    protected $append = ['amount_name_full'];
 
     protected $searchable = [
         'columns' => [
@@ -19,6 +21,13 @@ class Cost extends Model
             'quantity' => 10
         ]
     ];
+
+    protected function amountNameFull(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $this->name . ' - ' . $this->formatRupiah('quantity'),
+        );
+    }
 
     /**
      * Get the user that owns the Cost

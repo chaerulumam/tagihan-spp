@@ -158,13 +158,13 @@
             </li>
             <li class="menu-item {{ \Route::is('wali.*') ? 'active' : '' }}">
               <a href="{{ route('wali.index') }}" class="menu-link">
-                <i class="bx bx-data me-2"></i>
+                <i class="bx bx-user-check me-2"></i>
                 <div data-i18n="Analytics">Wali</div>
               </a>
             </li>
             <li class="menu-item {{ \Route::is('student.*') ? 'active' : '' }}">
               <a href="{{ route('student.index') }}" class="menu-link">
-                <i class="bx bx-data me-2"></i>
+                <i class="bx bx-user-pin me-2"></i>
                 <div data-i18n="Analytics">Student</div>
               </a>
             </li>
@@ -172,6 +172,12 @@
               <a href="{{ route('cost.index') }}" class="menu-link">
                 <i class="bx bx-money me-2"></i>
                 <div data-i18n="Analytics">Cost Module</div>
+              </a>
+            </li>
+            <li class="menu-item {{ \Route::is('invoice.*') ? 'active' : '' }}">
+              <a href="{{ route('invoice.index') }}" class="menu-link">
+                <i class="bx bx-dollar-circle me-2"></i>
+                <div data-i18n="Analytics">Data Invoice</div>
               </a>
             </li>
             <li class="menu-item">

@@ -3,6 +3,7 @@
 use App\Http\Controllers\CostController;
 use App\Http\Controllers\DashboardOperatorController;
 use App\Http\Controllers\DashboardWaliController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WaliController;
@@ -34,6 +35,7 @@ Route::prefix('operator')->middleware(['auth', 'auth.operator'])->group(function
     Route::resource('student', StudentController::class);
     Route::resource('walistudent', WaliStudentController::class);
     Route::resource('cost', CostController::class);
+    Route::resource('invoice', InvoiceController::class);
 });
 
 Route::prefix('walimurid')->middleware(['auth', 'auth.wali'])->group( function() {
