@@ -120,12 +120,13 @@ class StudentController extends Controller
     public function update(UpdateStudentRequest $request, $id)
     {
         $requestData = $request->validated();
-        // dd($requestData);
 
         $model = Model::findOrFail($id);
-
+        
         if ($request->hasFile('foto')) {
-            Storage::delete($model->foto);
+            if($model->foto) {
+                Storage::delete($model->foto);
+            }
             $requestData['foto'] = $request->file('foto')->store('public');
         }
 
