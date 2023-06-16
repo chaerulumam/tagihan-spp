@@ -13,7 +13,7 @@ class StoreInvoiceRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,12 @@ class StoreInvoiceRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'amount_id.*' => 'required|exists:costs,id',
+            'angkatan' => 'nullable|numeric',
+            'kelas' => 'nullable',
+            'invoice_date' => 'required|date',
+            'expired_date' => 'required|date',
+            'description' => 'nullable|string'
         ];
     }
 }

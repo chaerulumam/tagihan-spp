@@ -17,14 +17,14 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->index();
             $table->foreignId('student_id')->index();
-            $table->string('kelas');
-            $table->integer('angkatan');
+            $table->string('kelas')->nullable();
+            $table->integer('angkatan')->nullable();
             $table->date('invoice_date');
             $table->date('expired_date');
             $table->string('nama_biaya');
             $table->double('jumlah_biaya');
             $table->string('description')->nullable();
-            $table->double('denda');
+            $table->double('denda')->nullable();
             $table->enum('status', ['baru', 'angsur', 'lunas']);
             $table->timestamps();
         });

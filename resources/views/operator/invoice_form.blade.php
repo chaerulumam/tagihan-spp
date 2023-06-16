@@ -6,7 +6,8 @@
         <div class="card">
             <h5 class="card-header">{{ $title }}</h5>
             <div class="card-body">
-                {!! Form::model($model, ['route' => $route, 'method' => $method]) !!}
+                {!! Form::model($model, ['route' => $route, 'method' => 'POST']) !!}
+                <label for="">Invoice List</label>
                     @foreach ($amount as $item)
                         <div class="form-check mb-3">
                             {!! Form::checkbox('amount_id[]', $item->id, null, [

@@ -8,6 +8,7 @@ use App\Http\Requests\StoreInvoiceRequest;
 use App\Http\Requests\UpdateInvoiceRequest;
 use App\Models\Cost;
 use App\Models\Student;
+use Carbon\Carbon;
 
 class InvoiceController extends Controller
 {
@@ -63,7 +64,48 @@ class InvoiceController extends Controller
      */
     public function store(StoreInvoiceRequest $request)
     {
-        //
+        $requestData = $request->validated();
+        $amountIdArray = $requestData['amount_id'];
+
+        $student = Student::query();
+        if ($requestData['kelas'] != '') {
+            $student->where('kelas', $requestData['kelas']);
+        }
+        if ($requestData['angkatan'] != '') {
+            $student->where('angkatan', $requestData['angkatan']);
+        }
+        $student = $student->get();
+        foreach ($student as $item ) {
+            $itemStudent = $item;
+            $amount = Cost::whereIn('id', $amountIdArray)->get();
+            foreach ($amount as $itemAmount) {
+                $dataInvoice = [
+                    'student_id' => $itemStudent->id,
+                    'angkatan' => $requestData['angkatan'],
+                    'kelas' => $requestData['kelas'],
+                    'invoice_date' => $requestData['invoice_date'],
+                    'expired_date' => $requestData['expired_date'],
+                    'nama_biaya' => $itemAmount->name,
+                    'jumlah_biaya' => $itemAmount->quantity,
+                    'description' => $requestData['description'],
+                    'status' => 'baru'
+                ];
+                $expiredDate = Carbon::parse($requestData['expired_date']);
+                $invoiceDate = Carbon::parse($requestData['invoice_date']);
+                $invoiceMonth = $invoiceDate->format('m');
+                $invoiceYear = $invoiceDate->format('Y');
+                $invoiceCheck = Model::where('student_id', $itemStudent->id)
+                    ->where('nama_biaya', $itemAmount->name)
+                    ->whereMonth('invoice_date', $invoiceMonth)
+                    ->whereYear('invoice_date', $invoiceYear)
+                    ->first();
+                if ($invoiceCheck == null) {
+                    Model::create($dataInvoice);
+                }
+            }
+        }
+        flash('Invoice successfully recorded')->success();
+        return back();
     }
 
     /**

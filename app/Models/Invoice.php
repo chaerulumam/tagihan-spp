@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Invoice extends Model
 {
     use HasFactory;
+    protected $guarded = [];
 
     /**
      * Get the user that owns the Invoice
@@ -28,5 +29,17 @@ class Invoice extends Model
     public function student(): BelongsTo
     {
         return $this->belongsTo(Student::class);
+    }
+
+    // event handler
+    protected static function booted()
+    {
+        static::creating(function ($invoice) {
+            $invoice->user_id = auth()->user()->id;
+        });
+
+        static::updating(function ($invoice) {
+            $invoice->user_id = auth()->user()->id;
+        });
     }
 }
