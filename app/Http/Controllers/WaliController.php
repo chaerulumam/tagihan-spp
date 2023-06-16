@@ -57,7 +57,7 @@ class WaliController extends Controller
     {
         return view('operator.' . $this->viewShow, [
             'model' => Model::with('student')->wali()->where('id', $id)->firstOrFail(),
-            'student' => \App\Models\Student::whereNotIn('wali_id', [$id])->pluck('name', 'id'),
+            'student' => \App\Models\Student::pluck('name', 'id'),
             'title' => 'Detail Wali Student record'
         ]);
     }
