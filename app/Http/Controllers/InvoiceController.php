@@ -22,35 +22,35 @@ class InvoiceController extends Controller
     
     public function index(Request $request)
     {
-        if ($request->filled('month') && $request->filled('year')) {
-            $models = Invoice::with('user', 'student')->groupBy('student_id', 'invoices.id')->latest()
-                ->whereMonth('invoice_date', $request->month)
-                ->whereYear('invoice_date', $request->year)
-                ->paginate(50);
-        } else {
-            $models = Invoice::with('user', 'student')->groupBy('student_id', 'invoices.id')->latest()->paginate(50);
-        }
         // if ($request->filled('month') && $request->filled('year')) {
-        //         $models = Invoice::with('user', 'student')
-        //             ->whereIn('id', function ($query) use ($request) {
-        //                 $query->select(DB::raw('MAX(id)'))
-        //                     ->from('invoices')
-        //                     ->groupBy('student_id');
-        //             })
-        //             ->whereMonth('invoice_date', $request->month)
-        //             ->whereYear('invoice_date', $request->year)
-        //             ->orderBy('created_at', 'desc')
-        //             ->get();
-        //     } else {
-        //         $models = Invoice::with('user', 'student')
-        //             ->whereIn('id', function ($query) {
-        //                 $query->select(DB::raw('MAX(id)'))
-        //                     ->from('invoices')
-        //                     ->groupBy('student_id');
-        //             })
-        //             ->orderBy('created_at', 'desc')
-        //             ->get();
-        //     }
+        //     $models = Invoice::with('user', 'student')->groupBy('student_id', 'invoices.id')->latest()
+        //         ->whereMonth('invoice_date', $request->month)
+        //         ->whereYear('invoice_date', $request->year)
+        //         ->paginate(50);
+        // } else {
+        //     $models = Invoice::with('user', 'student')->groupBy('student_id', 'invoices.id')->latest()->paginate(50);
+        // }
+        if ($request->filled('month') && $request->filled('year')) {
+                $models = Invoice::with('user', 'student')
+                    ->whereIn('id', function ($query) use ($request) {
+                        $query->select(DB::raw('MAX(id)'))
+                            ->from('invoices')
+                            ->groupBy('student_id');
+                    })
+                    ->whereMonth('invoice_date', $request->month)
+                    ->whereYear('invoice_date', $request->year)
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+            } else {
+                $models = Invoice::with('user', 'student')
+                    ->whereIn('id', function ($query) {
+                        $query->select(DB::raw('MAX(id)'))
+                            ->from('invoices')
+                            ->groupBy('student_id');
+                    })
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+            }
         return view('operator.' . $this->viewIndex, [
             'models' => $models,
             'routePrefix' => $this->routePrefix,
@@ -138,9 +138,15 @@ class InvoiceController extends Controller
      * @param  \App\Models\Invoice  $invoice
      * @return \Illuminate\Http\Response
      */
-    public function show(Model $invoice)
+    public function show(Request $request, $id)
     {
-        //
+        $invoice = Model::with('student')->where('student_id', $request->student_id)
+            ->whereMonth('invoice_date', $request->month)
+            ->whereYear('invoice_date', $request->year)
+            ->get();
+            $data['invoice'] = $invoice;
+            $data['student'] = $invoice->first()->student;
+            return view('operator.' . $this->viewShow, $data);
     }
 
     /**
