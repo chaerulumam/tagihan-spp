@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Models\Cost;
+use App\Models\Invoice;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use App\Models\Invoice as Model;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreInvoiceRequest;
 use App\Http\Requests\UpdateInvoiceRequest;
-use App\Models\Cost;
-use App\Models\Student;
-use Carbon\Carbon;
 
 class InvoiceController extends Controller
 {
@@ -20,13 +22,35 @@ class InvoiceController extends Controller
     
     public function index(Request $request)
     {
-
-        if ($request->filled('q')) {
-            $models = Model::with('user', 'student')->search($request->q)->paginate(50);
+        if ($request->filled('month') && $request->filled('year')) {
+            $models = Invoice::with('user', 'student')->groupBy('student_id', 'invoices.id')->latest()
+                ->whereMonth('invoice_date', $request->month)
+                ->whereYear('invoice_date', $request->year)
+                ->paginate(50);
         } else {
-            $models = Model::with('user', 'student')->latest()->paginate(5);
+            $models = Invoice::with('user', 'student')->groupBy('student_id', 'invoices.id')->latest()->paginate(50);
         }
-
+        // if ($request->filled('month') && $request->filled('year')) {
+        //         $models = Invoice::with('user', 'student')
+        //             ->whereIn('id', function ($query) use ($request) {
+        //                 $query->select(DB::raw('MAX(id)'))
+        //                     ->from('invoices')
+        //                     ->groupBy('student_id');
+        //             })
+        //             ->whereMonth('invoice_date', $request->month)
+        //             ->whereYear('invoice_date', $request->year)
+        //             ->orderBy('created_at', 'desc')
+        //             ->get();
+        //     } else {
+        //         $models = Invoice::with('user', 'student')
+        //             ->whereIn('id', function ($query) {
+        //                 $query->select(DB::raw('MAX(id)'))
+        //                     ->from('invoices')
+        //                     ->groupBy('student_id');
+        //             })
+        //             ->orderBy('created_at', 'desc')
+        //             ->get();
+        //     }
         return view('operator.' . $this->viewIndex, [
             'models' => $models,
             'routePrefix' => $this->routePrefix,

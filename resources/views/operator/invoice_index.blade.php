@@ -6,42 +6,46 @@
         <div class="card">
             <h5 class="card-header">{{ $title }}</h5>
             <div class="card-body">
-                <a href="{{ route($routePrefix . '.create') }}" class="btn btn-primary btn-sm">Add Record</a>
-                {!! Form::open(['route' => $routePrefix . '.index', 'method'  => 'GET']) !!}
-                    <div class="input-group py-2">
-                        <input type="text" name="q" class="form-control" value="{{ request('q') }}" placeholder="Search invoice data.." aria-label="search name" aria-describedby="button-addon2">
-                        <button type="submit" class="btn btn-outline-primary" id="button-addon2">
-                            <i class="bx bx-search"></i>
-                        </button>
+                <div class="row">
+                    <div class="col-md-6">
+                        <a href="{{ route($routePrefix . '.create') }}" class="btn btn-primary btn-sm">Add Record</a>
                     </div>
-                {!! Form::close() !!}
+                    <div class="col-md-6">
+                        {!! Form::open(['route' => $routePrefix . '.index', 'method' => 'GET']) !!}
+                            <div class="row">
+                                <div class="col">
+                                    {!! Form::selectMonth('month', request('month'), ['class' => 'form-control']) !!}
+                                </div>
+                                <div class="col">
+                                    {!! Form::selectRange('year', 2022, date('Y') + 1, request('year'), ['class' => 'form-control']) !!}
+                                </div>
+                                <div class="col">
+                                    <button class="btn btn-primary btn-sm" type="submit">See Detail</button>
+                                </div>
+                            </div>
+                        {!! Form::close() !!}
+                    </div>
+                </div>
+
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Name of Wali</th>
-                                <th>Student Name</th>
                                 <th>NISN</th>
-                                <th>Jurusan</th>
-                                <th>Kelas</th>
-                                <th>Angakatan</th>
-                                <th>Created By</th>
-                                <th>Action</th>
+                                <th>Student Name</th>
+                                <th>Invoice Date</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
 
                         <tbody>
                             @forelse ($models as  $item)
-                            {{-- <tr>
+                            <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $item->wali->name }}</td>
-                                <td>{{ $item->name }}</td>
-                                <td>{{ $item->nisn }}</td>
-                                <td>{{ $item->jurusan }}</td>
-                                <td>{{ $item->kelas }}</td>
-                                <td>{{ $item->angkatan }}</td>
-                                <td>{{ $item->user->name }}</td>
+                                <td>{{ $item->student->nisn }}</td>
+                                <td>{{ $item->student->name }}</td>
+                                <td>{{ $item->invoice_date->format('d-M-Y') }}</td>
                                 <td>
                                     
                                     {!! Form::open([
@@ -54,7 +58,7 @@
                                                 <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i>  Delete</button>
                                     {!! Form::close() !!}
                                 </td>
-                            </tr> --}}
+                            </tr>
                             @empty
                                 <tr>
                                     <td colspan="8" class="text-center text-primary font-bold">No Records</td>

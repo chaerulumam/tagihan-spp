@@ -10,6 +10,7 @@ class Invoice extends Model
 {
     use HasFactory;
     protected $guarded = [];
+    protected $dates = ['invoice_date', 'expired_date'];
 
     /**
      * Get the user that owns the Invoice
